@@ -1,0 +1,54 @@
+const int ledRojo = 9;
+const int ledVerde = 10;
+const int ledAzul = 11;
+
+void setup() {
+  // Inicializar los pines como salidas
+  pinMode(ledRojo, OUTPUT);
+  pinMode(ledVerde, OUTPUT);
+  pinMode(ledAzul, OUTPUT);
+  
+  // Iniciar comunicación serial
+  Serial.begin(9600);
+  Serial.println("Ingrese 'r' para Rojo, 'g' para Verde, 'b' para Azul, 'o' para Apagar.");
+}
+
+void loop() {
+  // Comprobar si hay datos disponibles en el puerto serial
+  if (Serial.available() > 0) {
+    char entrada = Serial.read(); // Leer el carácter ingresado
+
+    // Encender el LED correspondiente
+    switch (entrada) {
+      case 'r':
+        encenderLed(ledRojo);
+        break;
+      case 'g':
+        encenderLed(ledVerde);
+        break;
+      case 'b':
+        encenderLed(ledAzul);
+        break;
+      case 'o':
+        apagarLeds();
+        break;
+      default:
+        Serial.println("Comando no válido. Use 'r', 'g', 'b' o 'o'.");
+        break;
+    }
+  }
+}
+
+void encenderLed(int led) {
+  apagarLeds(); // Apagar otros LEDs
+  digitalWrite(led, HIGH); // Encender el LED seleccionado
+  Serial.print("LED encendido: ");
+  Serial.println(led);
+}
+
+void apagarLeds() {
+  digitalWrite(ledRojo, LOW);
+  digitalWrite(ledVerde, LOW);
+  digitalWrite(ledAzul, LOW);
+  Serial.println("Todos los LEDs apagados.");
+}
