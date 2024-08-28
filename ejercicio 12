@@ -1,0 +1,32 @@
+const int motorPin = 9;      // Pin PWM para controlar la velocidad del motor
+const int dirPin = 8;        // Pin para controlar la dirección del motor
+const int potPin = A0;       // Pin del potenciómetro
+
+void setup() {
+  pinMode(motorPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int potValue = analogRead(potPin); // Leer el valor del potenciómetro
+  int pwmValue = map(potValue, 0, 1023, 0, 255); // Mapear el valor a rango PWM
+
+  // Controlar la dirección del motor
+  if (pwmValue > 0) {
+    digitalWrite(dirPin, HIGH); // Hacia adelante
+  } else {
+    digitalWrite(dirPin, LOW); // Hacia atrás
+  }
+
+  // Controlar la velocidad del motor
+  analogWrite(motorPin, abs(pwmValue)); // Aplicar PWM al motor
+
+  // Mostrar el valor en el monitor serial
+  Serial.print("Potenciómetro: ");
+  Serial.print(potValue);
+  Serial.print(" | PWM: ");
+  Serial.println(pwmValue);
+
+  delay(100); // Pequeño retardo
+}
