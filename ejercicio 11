@@ -1,0 +1,20 @@
+const int ledPin = 9;        
+const int botonPin = 2;     
+
+bool estadoLed = false;       
+bool ultimoEstadoBoton = HIGH; 
+
+void setup() {
+  pinMode(ledPin, OUTPUT);     
+  pinMode(botonPin, INPUT);    
+  digitalWrite(ledPin, estadoLed); 
+}
+void loop() {
+  bool estadoBoton = digitalRead(botonPin);
+  if (estadoBoton == LOW && ultimoEstadoBoton == HIGH) {
+    estadoLed = !estadoLed;
+    digitalWrite(ledPin, estadoLed); 
+    delay(50); 
+  }
+  ultimoEstadoBoton = estadoBoton;
+}
