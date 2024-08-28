@@ -1,22 +1,22 @@
-#include <Encoder.h>
+#include <Servo.h>
 
 const int motorPin = 9; // Pin PWM para el motor
 const int potPin = A0;   // Pin del potenciómetro
-Encoder enc(2, 3);       // Pines del encoder
+Servo motor;             // Crear un objeto Servo
 
 void setup() {
-  pinMode(motorPin, OUTPUT);
+  motor.attach(motorPin); // Asocia el pin PWM al objeto Servo
   Serial.begin(9600);
 }
 
 void loop() {
   int potValue = analogRead(potPin); // Leer el potenciómetro
-  int pwmValue = map(potValue, 0, 1023, 0, 255); // Mapear a rango PWM
-  analogWrite(motorPin, pwmValue); // Aplicar PWM al motor
+  int pwmValue = map(potValue, 0, 1023, 0, 180); // Mapear a rango 0-180
+  motor.write(pwmValue); // Aplicar PWM al motor
   
-  long pos = enc.read(); // Leer la posición del encoder
-  Serial.print("Posición: ");
-  Serial.println(pos);
+  // Opcional: Imprimir el valor PWM
+  Serial.print("PWM Value: ");
+  Serial.println(pwmValue);
   
   delay(100);
 }
