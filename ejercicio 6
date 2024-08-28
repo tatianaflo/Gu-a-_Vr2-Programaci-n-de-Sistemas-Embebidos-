@@ -1,0 +1,18 @@
+int  pinVout = A0;
+
+void setup() {
+Serial.begin(9600);
+}
+
+void loop() {
+ int valorLeido = analogRead(pinVout);
+
+ float voltaje = valorLeido * (5.0 / 1023.0);
+
+ Serial.print ( "valor leido : ");
+ Serial.print(valorLeido);
+ Serial.print (" -voltaje: ");
+ Serial.print(voltaje,3);
+
+ delay (1000)
+}
