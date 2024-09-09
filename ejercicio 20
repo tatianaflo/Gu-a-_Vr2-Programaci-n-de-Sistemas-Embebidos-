@@ -1,0 +1,24 @@
+#define GAS_SENSOR_PIN A0 
+#define SPEAKER_PIN 9     
+#define THRESHOLD 300      
+
+void setup() {
+  Serial.begin(9600);   
+  pinMode(SPEAKER_PIN, OUTPUT); 
+}
+
+void loop() {
+  int gasLevel = analogRead(GAS_SENSOR_PIN); 
+  Serial.print("Nivel de gas: ");
+  Serial.println(gasLevel); 
+
+  if (gasLevel > THRESHOLD) {
+    int speakerVolume = map(gasLevel, THRESHOLD, 1023, 0, 255); 
+    analogWrite(SPEAKER_PIN, speakerVolume); 
+    Serial.println("¡Alerta! Metano detectado.");
+  } else {
+    analogWrite(SPEAKER_PIN, 0);
+  }
+
+  delay(1000); 
+}
