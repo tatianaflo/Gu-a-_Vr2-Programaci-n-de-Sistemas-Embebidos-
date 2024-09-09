@@ -1,0 +1,57 @@
+#include <DHT.h>
+#include <LiquidCrystal.h>
+
+// Configuración del DHT11
+#define DHTPIN 7          // Pin donde está conectado el DHT11
+#define FAN_PIN 8         // Pin del transistor para el ventilador
+
+DHT dht(DHTPIN, DHT11);
+
+// Inicializa la LCD
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// Umbral de temperatura
+float thresholdTemp = 25.0; // Cambia este valor según tus necesidades
+
+void setup() {
+  lcd.begin(16, 2); // Inicializa la LCD
+  dht.begin();      // Inicializa el DHT11
+  pinMode(FAN_PIN, OUTPUT); // Configura el pin del ventilador como salida
+  digitalWrite(FAN_PIN, LOW); // Apaga el ventilador al inicio
+}
+
+void loop() {
+  // Espera un segundo entre lecturas
+  delay(2000);
+
+  // Lee la humedad y la temperatura
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  // Verifica si hay errores en la lectura
+  if (isnan(h) || isnan(t)) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Error en DHT");
+    return;
+  }
+
+  // Muestra la temperatura y la humedad en la LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(t);
+  lcd.print(" C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Humedad: ");
+  lcd.print(h);
+  lcd.print(" %");
+
+  // Control del ventilador
+  if (t > thresholdTemp) {
+    digitalWrite(FAN_PIN, HIGH); // Activa el ventilador
+  } else {
+    digitalWrite(FAN_PIN, LOW); // Desactiva el ventilador
+  }
+}
