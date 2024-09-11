@@ -1,0 +1,28 @@
+#define PIR_PIN 2    // Pin donde está conectado el sensor PIR
+int ledPin = 13;    // Pin donde está conectado el LED
+
+unsigned long duration = 300000; // Duración de 5 minutos en milisegundos
+unsigned long startTime;
+bool ledState = false;
+
+void setup() {
+  pinMode(PIR_PIN, INPUT);
+  pinMode(ledPin, OUTPUT); // Usando la variable int para definir el pin del LED
+  digitalWrite(ledPin, LOW); // Asegúrate de que el LED esté apagado al inicio
+}
+
+void loop() {
+  int pirValue = digitalRead(PIR_PIN);
+  
+  if (pirValue == HIGH && !ledState) { // Flanco ascendente
+    digitalWrite(ledPin, HIGH); // Enciende el LED
+    ledState = true; // Cambia el estado del LED
+    startTime = millis(); // Guarda el tiempo de inicio
+  }
+
+  // Verifica si el LED ha estado encendido durante 5 minutos
+  if (ledState && (millis() - startTime >= duration)) {
+    digitalWrite(ledPin, LOW); // Apaga el LED
+    ledState = false; // Cambia el estado del LED
+  }
+}
