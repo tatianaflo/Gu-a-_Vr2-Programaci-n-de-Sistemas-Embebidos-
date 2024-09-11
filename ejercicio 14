@@ -1,0 +1,27 @@
+// Definir los pines
+const int pinJoystick = A0; // Conectar eje del joystick al pin A0
+const int pinPWM = 9;       // Pin PWM conectado al driver del motor
+
+void setup() {
+  pinMode(pinPWM, OUTPUT);
+  Serial.begin(9600);       // Para ver valores en el monitor serie (opcional)
+}
+
+void loop() {
+  // Leer valor analógico del joystick (0 a 1023)
+  int joystickValue = analogRead(pinJoystick);
+  
+  // Convertir el valor del joystick (0 a 1023) a un valor PWM (0 a 255)
+  int pwmValue = map(joystickValue, 0, 1023, 0, 255);
+
+  // Escribir el valor PWM al motor
+  analogWrite(pinPWM, pwmValue);
+
+  // Opcional: Mostrar valor en el monitor serie
+  Serial.print("Joystick: ");
+  Serial.print(joystickValue);
+  Serial.print(" -> PWM: ");
+  Serial.println(pwmValue);
+
+  delay(10); // Pequeña pausa
+}
